@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  check_consolidator:
+    image: check-consolidator:0.1     # usa la imagen que ya construiste
+    container_name: check-demo
+    ports:
+      - "8080:8080"
+    environment:
+      # variables de entorno opcionales
+      SERVICE_UPTIME: "local-demo"
+    restart: unless-stopped
