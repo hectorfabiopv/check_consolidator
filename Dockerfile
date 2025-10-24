@@ -10,6 +10,7 @@ COPY requirements.txt .
 # Instalar dependencias
 RUN pip install --no-cache-dir --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
+RUN apt-get update && apt-get install -y mariadb-client && rm -rf /var/lib/apt/lists/*
 
 # Copiar el resto del código
 COPY app ./app
