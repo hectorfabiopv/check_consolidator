@@ -7,3 +7,6 @@ app/logs/*
 
 # Exceptuar .gitkeep
 !app/logs/.gitkeep
+
+# Ignorar docker-compose para desarrollo local
+docker-compose.yml
