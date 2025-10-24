@@ -10,3 +10,8 @@ app/logs/*
 
 # Ignorar docker-compose para desarrollo local
 docker-compose.yml
+
+# Python bytecode / cache
+__pycache__/
+*.py[cod]
+*$py.class
