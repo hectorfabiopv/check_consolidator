@@ -4,3 +4,6 @@ notas_locales.txt
 
 # Logs
 app/logs/*
+
+# Exceptuar .gitkeep
+!app/logs/.gitkeep
