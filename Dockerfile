@@ -1,19 +1,24 @@
-FROM python:3.11-slim
+# Use una imagen oficial de Python como base
+FROM python:3.12-slim
 
-ENV PYTHONUNBUFFERED=1
+# Setear el directorio de trabajo
 WORKDIR /app
 
-# dependencias del sistema (si necesitas, p. ej., build tools)
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
-
+# Copiar los archivos de requisitos primero para cachear dependencias
 COPY requirements.txt .
+
+# Instalar dependencias
+RUN pip install --no-cache-dir --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY ./app /app/app
+# Copiar el resto del código
+COPY app ./app
 
+# Exponer puerto para Cloud Run
 EXPOSE 8080
 
-# Escucha el puerto de la variable PORT si está disponible (Cloud Run usa $PORT)
-CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8080} --reload"]
+# Variables de entorno por defecto (pueden ser sobrescritas en Cloud Run)
+ENV PORT=8080
+
+# Comando por defecto para correr FastAPI
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
