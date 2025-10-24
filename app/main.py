@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from app.db.connection import get_connection
 from app.services.sync_service import sync_cliente_by_id, sync_all_clients
+from app.services.client_service import fetch_and_insert_clients
 import mysql.connector
 
 app = FastAPI(title="Check Consolidator", version="0.2.0")
@@ -46,3 +47,17 @@ def sync_all_endpoint():
     """
     resumen = sync_all_clients()
     return {"message": "Sincronización completada", "resumen": resumen}
+
+
+@app.post("/clientes/importar")
+def importar_clientes():
+    """
+    Endpoint que obtiene clientes desde la API externa y los inserta en inventario_clientes.
+    """
+    resumen = fetch_and_insert_clients()
+    if "error" in resumen:
+        raise HTTPException(status_code=500, detail=resumen["error"])
+    return {"message": "Clientes importados", "resumen": resumen}
+
+
+    
